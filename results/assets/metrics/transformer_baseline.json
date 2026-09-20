@@ -1,0 +1,50 @@
+{
+  "experiment": "transformer_baseline",
+  "model_name": "prajjwal1/bert-tiny",
+  "dataset": "nyu-mll/glue:sst2",
+  "train_size": 2000,
+  "validation_size": 500,
+  "seed": 42,
+  "device": "cpu",
+
+  "hyperparameters": {
+    "model_name": "prajjwal1/bert-tiny",
+    "train_size": 2000,
+    "validation_size": 500,
+    "seed": 42,
+    "batch_size": 16,
+    "epochs": 3,
+    "learning_rate": 2e-05,
+    "max_length": 128
+  },
+
+  "package_versions": {
+    "torch": "2.14.0",
+    "datasets": "5.0.1",
+    "transformers": "4.57.6"
+  },
+
+  "history": [
+    {
+      "epoch": 1.0,
+      "train_loss": 0.6746235609054565,
+      "validation_loss": 0.6726110649108886,
+      "validation_accuracy": 0.552
+    },
+    {
+      "epoch": 2.0,
+      "train_loss": 0.6605237669944763,
+      "validation_loss": 0.6561024255752563,
+      "validation_accuracy": 0.66
+    },
+    {
+      "epoch": 3.0,
+      "train_loss": 0.6365107536315918,
+      "validation_loss": 0.6355566997528076,
+      "validation_accuracy": 0.674
+    }
+  ],
+
+  "final_validation_loss": 0.6355566997528076,
+  "final_validation_accuracy": 0.674
+}
