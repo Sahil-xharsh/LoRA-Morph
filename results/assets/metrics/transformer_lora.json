@@ -1,0 +1,44 @@
+{
+  "experiment": "transformer_lora",
+  "model_name": "prajjwal1/bert-tiny",
+  "dataset": "nyu-mll/glue:sst2",
+  "train_size": 2000,
+  "validation_size": 500,
+  "seed": 42,
+  "device": "cpu",
+  "target_modules": [
+    "query",
+    "value"
+  ],
+  "rank": 8,
+  "alpha": 16,
+  "trainable_parameters": 8450,
+  "total_parameters": 4394370,
+  "trainable_fraction": 0.0019229150026056068,
+  "package_versions": {
+    "torch": "2.14.0",
+    "transformers": "4.57.6"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.6867340116500854,
+      "validation_loss": 0.685553581237793,
+      "validation_accuracy": 0.56
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6823222880363464,
+      "validation_loss": 0.6856767868995667,
+      "validation_accuracy": 0.536
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.6801130390167236,
+      "validation_loss": 0.6856104969978333,
+      "validation_accuracy": 0.532
+    }
+  ],
+  "final_validation_loss": 0.6856104969978333,
+  "final_validation_accuracy": 0.532
+}
