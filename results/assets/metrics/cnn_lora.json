@@ -1,0 +1,35 @@
+{
+  "experiment": "cnn_lora",
+  "dataset": "Fashion-MNIST",
+  "train_size": 5000,
+  "test_size": 1000,
+  "seed": 42,
+  "device": "cpu",
+  "rank": 4,
+  "alpha": 8,
+  "target_modules": [
+    "fc1",
+    "fc2"
+  ],
+  "trainable_parameters": 6824,
+  "total_parameters": 112690,
+  "trainable_fraction": 0.06055550625610081,
+  "package_versions": {
+    "torch": "2.14.0",
+    "torchvision": "0.29.0"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 2.16255447177887,
+      "test_loss": 1.7143802967071533,
+      "test_accuracy": 0.373
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.4590563220977784,
+      "test_loss": 1.2344890079498292,
+      "test_accuracy": 0.531
+    }
+  ]
+}

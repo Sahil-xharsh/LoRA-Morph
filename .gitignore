@@ -37,6 +37,7 @@ logs/
 checkpoints/
 
 # Large ML files
+data/
 *.pt
 *.pth
 *.ckpt
