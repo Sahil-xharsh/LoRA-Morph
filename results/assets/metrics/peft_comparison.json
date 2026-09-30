@@ -1,0 +1,73 @@
+{
+  "experiment": "peft_comparison",
+  "model_name": "prajjwal1/bert-tiny",
+  "seed": 42,
+  "rank": 8,
+  "alpha": 16,
+  "learning_rate": 0.0001,
+  "target_modules": [
+    "query",
+    "value"
+  ],
+  "package_versions": {
+    "torch": "2.14.0",
+    "transformers": "4.57.6",
+    "peft": "0.21.0"
+  },
+  "initialization_parity": {
+    "max_forward_deviation": 0.0,
+    "adapter_gradient_cosine": 0.9999999776482582,
+    "custom_trainable_parameters": 8450,
+    "peft_trainable_parameters": 8450
+  },
+  "training_comparison": {
+    "custom_history": [
+      {
+        "epoch": 0,
+        "validation_loss": 0.6986608095169068,
+        "validation_accuracy": 0.52
+      },
+      {
+        "epoch": 1,
+        "validation_loss": 0.6964061479568482,
+        "validation_accuracy": 0.522
+      },
+      {
+        "epoch": 2,
+        "validation_loss": 0.6899634504318237,
+        "validation_accuracy": 0.526
+      },
+      {
+        "epoch": 3,
+        "validation_loss": 0.6791339340209961,
+        "validation_accuracy": 0.554
+      }
+    ],
+    "peft_history": [
+      {
+        "epoch": 0,
+        "validation_loss": 0.6986608095169068,
+        "validation_accuracy": 0.52
+      },
+      {
+        "epoch": 1,
+        "validation_loss": 0.6968986692428589,
+        "validation_accuracy": 0.522
+      },
+      {
+        "epoch": 2,
+        "validation_loss": 0.6900207304954529,
+        "validation_accuracy": 0.526
+      },
+      {
+        "epoch": 3,
+        "validation_loss": 0.6800952372550965,
+        "validation_accuracy": 0.548
+      }
+    ],
+    "curve_rmse": 0.0005408239387163975,
+    "final_accuracy_difference": 0.006000000000000005,
+    "custom_loss_non_increasing_from_initial": true,
+    "peft_loss_non_increasing_from_initial": true
+  }
+}
