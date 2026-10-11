@@ -6,7 +6,6 @@ import torch
 from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-from lora_morph import LoRALinear, inject_lora
 from examples.transformer_example import (
     BATCH_SIZE,
     EPOCHS,
@@ -19,7 +18,7 @@ from examples.transformer_example import (
     set_seed,
     tokenize_sst2,
 )
-
+from lora_morph import inject_lora
 
 RANK = 8
 ALPHA = 16
@@ -39,9 +38,7 @@ def add_lora_adapters(model, rank=RANK, alpha=ALPHA):
 
 def count_parameters(model):
     trainable = sum(
-        parameter.numel()
-        for parameter in model.parameters()
-        if parameter.requires_grad
+        parameter.numel() for parameter in model.parameters() if parameter.requires_grad
     )
     total = sum(parameter.numel() for parameter in model.parameters())
     return trainable, total

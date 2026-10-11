@@ -3,13 +3,12 @@ from importlib.metadata import version
 from pathlib import Path
 
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
-from lora_morph import inject_lora
 from examples.transformer_example import SEED, set_seed
-
+from lora_morph import inject_lora
 
 TRAIN_SIZE = 5000
 TEST_SIZE = 1000
@@ -34,7 +33,7 @@ class FashionCNN(nn.Module):
             nn.MaxPool2d(2),
             nn.Conv2d(16, 32, 3, padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2)
+            nn.MaxPool2d(2),
         )
 
         self.fc1 = nn.Linear(32 * 7 * 7, 64)
@@ -48,12 +47,7 @@ class FashionCNN(nn.Module):
 
 
 def add_lora(model):
-    return inject_lora(
-        model,
-        {"fc1", "fc2"},
-        r=LORA_RANK,
-        alpha=LORA_ALPHA
-    )
+    return inject_lora(model, {"fc1", "fc2"}, r=LORA_RANK, alpha=LORA_ALPHA)
 
 
 def count_parameters(model):
@@ -66,17 +60,11 @@ def load_data():
     transform = transforms.ToTensor()
 
     train = datasets.FashionMNIST(
-        DATA_DIR,
-        train=True,
-        download=True,
-        transform=transform
+        DATA_DIR, train=True, download=True, transform=transform
     )
 
     test = datasets.FashionMNIST(
-        DATA_DIR,
-        train=False,
-        download=True,
-        transform=transform
+        DATA_DIR, train=False, download=True, transform=transform
     )
 
     g = torch.Generator().manual_seed(SEED)
@@ -115,16 +103,9 @@ def train():
 
     train_data, test_data = load_data()
 
-    train_loader = DataLoader(
-        train_data,
-        batch_size=BATCH_SIZE,
-        shuffle=True
-    )
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
 
-    test_loader = DataLoader(
-        test_data,
-        batch_size=BATCH_SIZE
-    )
+    test_loader = DataLoader(test_data, batch_size=BATCH_SIZE)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("using", device)
@@ -137,8 +118,7 @@ def train():
     print(f"trainable parameters: {trainable}/{total}")
 
     optimizer = torch.optim.AdamW(
-        (p for p in model.parameters() if p.requires_grad),
-        lr=LR
+        (p for p in model.parameters() if p.requires_grad), lr=LR
     )
 
     loss_fn = nn.CrossEntropyLoss()
@@ -166,18 +146,16 @@ def train():
             count += labels.size(0)
 
         train_loss = loss_total / count
-        test_loss, test_accuracy = evaluate(
-            model,
-            test_loader,
-            device
-        )
+        test_loss, test_accuracy = evaluate(model, test_loader, device)
 
-        history.append({
-            "epoch": epoch + 1,
-            "train_loss": train_loss,
-            "test_loss": test_loss,
-            "test_accuracy": test_accuracy
-        })
+        history.append(
+            {
+                "epoch": epoch + 1,
+                "train_loss": train_loss,
+                "test_loss": test_loss,
+                "test_accuracy": test_accuracy,
+            }
+        )
 
         print(
             f"epoch {epoch + 1}: "
@@ -201,9 +179,9 @@ def train():
         "trainable_fraction": trainable / total,
         "package_versions": {
             "torch": version("torch"),
-            "torchvision": version("torchvision")
+            "torchvision": version("torchvision"),
         },
-        "history": history
+        "history": history,
     }
 
 
@@ -211,10 +189,7 @@ def main():
     results = train()
 
     RESULT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    RESULT_FILE.write_text(
-        json.dumps(results, indent=2) + "\n",
-        encoding="utf-8"
-    )
+    RESULT_FILE.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
 
     print("saved:", RESULT_FILE)
 

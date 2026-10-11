@@ -26,15 +26,12 @@ from examples.transformer_example import (
 )
 from lora_morph import LoRATracker
 
-
 RANKS = (2, 4, 8, 16)
 OUTPUT_PATH = Path("results/assets/metrics/rank_sweep.json")
 
 
 def train_rank(rank, train_loader, validation_loader, device):
-    model = AutoModelForSequenceClassification.from_pretrained(
-        MODEL_NAME, num_labels=2
-    )
+    model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
     model = add_lora_adapters(model, rank=rank, alpha=ALPHA).to(device)
     optimizer = torch.optim.AdamW(
         (parameter for parameter in model.parameters() if parameter.requires_grad),
@@ -122,9 +119,7 @@ def run_sweep():
 def main():
     results = run_sweep()
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(
-        json.dumps(results, indent=2) + "\n", encoding="utf-8"
-    )
+    OUTPUT_PATH.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     print(f"Metrics written to {OUTPUT_PATH}")
 
 

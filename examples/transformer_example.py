@@ -8,7 +8,6 @@ from datasets import Dataset, DatasetDict, load_dataset
 from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-
 MODEL_NAME = "prajjwal1/bert-tiny"
 
 TRAIN_SIZE = 2_000
@@ -48,9 +47,7 @@ def prepare_sst2_datasets():
     # Keep the baseline small enough to run quickly on CPU.
     return DatasetDict(
         train=select_fixed_subset(dataset["train"], TRAIN_SIZE, SEED),
-        validation=select_fixed_subset(
-            dataset["validation"], VALIDATION_SIZE, SEED
-        ),
+        validation=select_fixed_subset(dataset["validation"], VALIDATION_SIZE, SEED),
     )
 
 

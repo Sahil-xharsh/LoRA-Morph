@@ -6,8 +6,8 @@ from pathlib import Path
 
 import torch
 import torch.nn.functional as F
-from torch.utils.data import DataLoader
 from peft import LoraConfig, TaskType, get_peft_model
+from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 from examples.lora_transformer_example import (
@@ -20,14 +20,13 @@ from examples.transformer_example import (
     EPOCHS,
     MAX_LENGTH,
     MODEL_NAME,
+    SEED,
     evaluate,
     prepare_sst2_datasets,
-    SEED,
     set_seed,
     tokenize_sst2,
 )
 from lora_morph import LoRALinear
-
 
 RANK = 8
 COMPARISON_LEARNING_RATE = 1e-4
@@ -99,7 +98,11 @@ def train_model(model, train_loader, validation_loader, device):
     history = []
     initial_loss, initial_accuracy = evaluate(model, validation_loader, device)
     history.append(
-        {"epoch": 0, "validation_loss": initial_loss, "validation_accuracy": initial_accuracy}
+        {
+            "epoch": 0,
+            "validation_loss": initial_loss,
+            "validation_accuracy": initial_accuracy,
+        }
     )
 
     for epoch in range(1, EPOCHS + 1):
@@ -145,9 +148,7 @@ def training_comparison():
     peft_model = add_peft_adapters(copy.deepcopy(base_model), RANK, ALPHA)
     copy_custom_weights_to_peft(custom_model, peft_model)
 
-    custom_history = train_model(
-        custom_model, train_loader, validation_loader, device
-    )
+    custom_history = train_model(custom_model, train_loader, validation_loader, device)
     peft_history = train_model(peft_model, train_loader, validation_loader, device)
     custom_losses = [item["validation_loss"] for item in custom_history]
     peft_losses = [item["validation_loss"] for item in peft_history]
@@ -162,7 +163,8 @@ def training_comparison():
         "peft_history": peft_history,
         "curve_rmse": curve_rmse,
         "final_accuracy_difference": abs(custom_accuracy - peft_accuracy),
-        "custom_loss_non_increasing_from_initial": custom_losses[-1] <= custom_losses[0],
+        "custom_loss_non_increasing_from_initial": custom_losses[-1]
+        <= custom_losses[0],
         "peft_loss_non_increasing_from_initial": peft_losses[-1] <= peft_losses[0],
     }
 
@@ -187,9 +189,7 @@ def compare_initialization():
     peft_model(**inputs).loss.backward()
 
     return {
-        "max_forward_deviation": forward_deviation(
-            custom_model, peft_model, inputs
-        ),
+        "max_forward_deviation": forward_deviation(custom_model, peft_model, inputs),
         "adapter_gradient_cosine": adapter_gradient_cosine(custom_model, peft_model),
         "custom_trainable_parameters": sum(
             parameter.numel()
@@ -222,9 +222,7 @@ def main():
         "training_comparison": training_comparison(),
     }
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(
-        json.dumps(results, indent=2) + "\n", encoding="utf-8"
-    )
+    OUTPUT_PATH.write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")
     print(f"Metrics written to {OUTPUT_PATH}")
 
 
