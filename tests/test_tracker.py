@@ -1,5 +1,5 @@
 import torch
-import torch.nn as nn
+from torch import nn
 
 from lora_morph import LoRATracker, inject_lora
 

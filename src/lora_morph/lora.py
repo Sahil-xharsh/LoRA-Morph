@@ -1,7 +1,8 @@
 from collections.abc import Iterable
 
 import torch
-import torch.nn as nn
+from torch import nn
+
 
 class LoRALinear(nn.Module):
     def __init__(self, base_linear: nn.Linear, r: int, alpha: float):
@@ -20,12 +21,8 @@ class LoRALinear(nn.Module):
         if self.base_linear.bias is not None:
             self.base_linear.bias.requires_grad = False
 
-        self.A = nn.Parameter(
-            torch.randn(base_linear.in_features, r) * 0.01
-        )  # type: nn.Parameter
-        self.B = nn.Parameter(
-            torch.zeros(r, base_linear.out_features)
-        )  # type: nn.Parameter
+        self.A = nn.Parameter(torch.randn(base_linear.in_features, r) * 0.01)  # type: nn.Parameter
+        self.B = nn.Parameter(torch.zeros(r, base_linear.out_features))  # type: nn.Parameter
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         base_output = self.base_linear(x)
@@ -34,14 +31,13 @@ class LoRALinear(nn.Module):
         return base_output + self.scaling * lora_output
 
 
-
 def inject_lora(
     model: nn.Module,
     target_module_names: Iterable[str],
     r: int,
     alpha: float,
 ) -> nn.Module:
-    """Replaced matching linear layers, keeping rest fixed """
+    """Replaced matching linear layers, keeping rest fixed"""
     targets = set(target_module_names)  # type: set[str]
 
     for param in model.parameters():

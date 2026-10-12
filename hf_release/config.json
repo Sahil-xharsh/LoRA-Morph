@@ -1,0 +1,16 @@
+{
+  "base_model": "prajjwal1/bert-tiny",
+  "task": "sst2-sentiment",
+  "num_labels": 2,
+  "rank": 8,
+  "alpha": 16,
+  "target_modules": [
+    "query",
+    "value"
+  ],
+  "max_length": 128,
+  "seed": 42,
+  "epochs": 3,
+  "learning_rate": 2e-05,
+  "batch_size": 16
+}

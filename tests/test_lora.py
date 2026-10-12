@@ -2,9 +2,10 @@ from collections import OrderedDict
 
 import pytest
 import torch
-import torch.nn as nn
+from torch import nn
 
 from lora_morph import LoRALinear, inject_lora
+
 
 # torch.Tensor
 def test_lora_linear_starts_as_exact_noop():
@@ -17,10 +18,10 @@ def test_lora_linear_starts_as_exact_noop():
         alpha=8,
     )
 
-    x = torch.randn(5, 10) 
+    x = torch.randn(5, 10)
 
-    base_output = base_linear(x)  
-    lora_output = lora_linear(x) 
+    base_output = base_linear(x)
+    lora_output = lora_linear(x)
 
     assert lora_output.shape == base_output.shape
     assert torch.equal(lora_output, base_output)
@@ -38,12 +39,10 @@ def test_lora_linear_applies_scaled_low_rank_update():
     x = torch.tensor([[1.0, 2.0, 3.0]])
 
     with torch.no_grad():
-        lora_linear.A.copy_(
-            torch.tensor([[1.0, 0.0],[0.0, 1.0], [1.0, 1.0]])
-        )
+        lora_linear.A.copy_(torch.tensor([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]]))
         lora_linear.B.copy_(torch.tensor([[2.0, 3.0], [4.0, 5.0]]))
 
-    expected_update = (4 / 2) * (x @ lora_linear.A @ lora_linear.B) 
+    expected_update = (4 / 2) * (x @ lora_linear.A @ lora_linear.B)
 
     assert torch.allclose(
         lora_linear(x),
@@ -95,9 +94,7 @@ def test_inject_lora_freezes_base_parameters_and_trains_adapters():
     inject_lora(model, target_module_names={"0", "1"}, r=2, alpha=2)
 
     trainable_parameters = [  # type: list[nn.Parameter]
-        parameter
-        for parameter in model.parameters()
-        if parameter.requires_grad
+        parameter for parameter in model.parameters() if parameter.requires_grad
     ]
 
     assert len(trainable_parameters) == 4

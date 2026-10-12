@@ -4,8 +4,8 @@ import torch
 from transformers import BertConfig, BertForSequenceClassification
 
 from examples.peft_comparison import (
-    add_peft_adapters,
     add_lora_adapters,
+    add_peft_adapters,
     copy_custom_weights_to_peft,
     forward_deviation,
 )

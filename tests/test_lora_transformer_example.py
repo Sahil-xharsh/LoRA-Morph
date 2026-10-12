@@ -19,7 +19,9 @@ def test_transformer_lora_targets_query_and_value_projections():
 
     add_lora_adapters(model, rank=4, alpha=8)
 
-    lora_modules = [module for module in model.modules() if isinstance(module, LoRALinear)]
+    lora_modules = [
+        module for module in model.modules() if isinstance(module, LoRALinear)
+    ]
     assert len(lora_modules) == 4
     assert all(parameter.requires_grad for parameter in model.classifier.parameters())
 

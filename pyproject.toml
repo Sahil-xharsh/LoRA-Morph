@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "datasets>=5.0.1",
+    "huggingface-hub>=0.36.2",
     "numpy",
     "peft>=0.21.0",
     "torch",
@@ -16,6 +17,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest",
+    "ruff>=0.17.0",
 ]
 
 [build-system]
