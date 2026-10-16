@@ -715,13 +715,18 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "datasets" },
-    { name = "huggingface-hub" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "peft" },
     { name = "torch" },
     { name = "torchvision" },
     { name = "transformers" },
+]
+
+[package.optional-dependencies]
+hf = [
+    { name = "huggingface-hub" },
+    { name = "safetensors" },
 ]
 
 [package.dev-dependencies]
@@ -733,13 +738,15 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "datasets", specifier = ">=5.0.1" },
-    { name = "huggingface-hub", specifier = ">=0.36.2" },
+    { name = "huggingface-hub", marker = "extra == 'hf'", specifier = ">=0.36.2" },
     { name = "numpy" },
     { name = "peft", specifier = ">=0.21.0" },
+    { name = "safetensors", marker = "extra == 'hf'", specifier = ">=0.4" },
     { name = "torch" },
     { name = "torchvision", specifier = ">=0.29.0" },
     { name = "transformers", specifier = ">=4.40,<5" },
 ]
+provides-extras = ["hf"]
 
 [package.metadata.requires-dev]
 dev = [

@@ -1,8 +1,8 @@
 # LoRA-Morph
 
-LoRA-Morph is a small, framework-agnostic LoRA implementation built from
+LoRA-Morph is a small framework-agnostic LoRA implementation built from
 scratch in PyTorch. The project checks the same adapter implementation against
-three settings: a standalone linear layer, a BERT sentiment classifier, and a
+three settings: a standalone linear layer a BERT sentiment classifier and a
 CNN image classifier.
 
 ## What is included
@@ -66,9 +66,16 @@ The export helper writes trainable tensors and metadata for the BERT LoRA run:
 uv run python -m examples.export_adapter
 ```
 
-The generated bundle contains `adapter.pt`, `config.json`, and `metrics.json`
-under `hf_release/`. The adapter requires the base model named in
-`hf_release/config.json` for loading.
+The generated bundle contains `adapter.safetensors`, `config.json`, the model
+card, and the rank-sweep plot under `hf_release/`. The adapter requires the
+base model named in `hf_release/config.json` for loading.
+
+## Hugging Face
+
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-model-yellow)](https://huggingface.co/<your-username>/lora-morph-bert-tiny-sst2)
+
+The validated BERT-tiny SST-2 LoRA adapter will be published at
+`(https://huggingface.co/Sahil-xharsh/lora-morph-bert-tiny-sst2)`.
 
 ## Artifacts
 

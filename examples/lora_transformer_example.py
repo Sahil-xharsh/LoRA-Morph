@@ -3,7 +3,6 @@ from importlib.metadata import version
 from pathlib import Path
 
 import torch
-from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 from examples.transformer_example import (
@@ -14,6 +13,7 @@ from examples.transformer_example import (
     MODEL_NAME,
     SEED,
     evaluate,
+    make_loader,
     prepare_sst2_datasets,
     set_seed,
     tokenize_sst2,
@@ -51,19 +51,11 @@ def train_lora():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     datasets = tokenize_sst2(datasets, tokenizer, MAX_LENGTH)
 
-    def collate(rows):
-        return tokenizer.pad(rows, return_tensors="pt")
-
-    train_loader = DataLoader(
-        datasets["train"],
-        batch_size=BATCH_SIZE,
-        shuffle=True,
-        collate_fn=collate,
+    train_loader = make_loader(
+        datasets["train"], BATCH_SIZE, tokenizer, shuffle=True, seed=SEED
     )
-    validation_loader = DataLoader(
-        datasets["validation"],
-        batch_size=BATCH_SIZE,
-        collate_fn=collate,
+    validation_loader = make_loader(
+        datasets["validation"], BATCH_SIZE, tokenizer, shuffle=False, seed=SEED
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -1,0 +1,166 @@
+{
+  "experiment": "sst2_accuracy_diagnosis",
+  "model_name": "prajjwal1/bert-tiny",
+  "seed": 42,
+  "target_modules": [
+    "query",
+    "value"
+  ],
+  "learning_rate": 0.0001,
+  "dataset": {
+    "label_mapping": {
+      "0": "negative",
+      "1": "positive"
+    },
+    "label_counts": {
+      "1": 1382,
+      "0": 1118
+    },
+    "token_length_min": 3,
+    "token_length_max": 54,
+    "token_length_mean": 15.3976,
+    "truncated_examples": 0,
+    "max_length": 128
+  },
+  "runs": [
+    {
+      "condition": "untrained",
+      "validation_loss": 0.6882250328063965,
+      "validation_accuracy": 0.548,
+      "learning_rate": 0.0001,
+      "epochs": 0,
+      "update_steps": 0,
+      "trainable_parameter_count": 4386178,
+      "initial_lora_norms": {},
+      "final_lora_norms": {},
+      "max_gradient_norm": 0.0,
+      "gradient_observations": 0,
+      "lora_parameters_changed": false,
+      "initial_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "final_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "repeat": 1
+    },
+    {
+      "condition": "head_only",
+      "validation_loss": 0.6817072734832764,
+      "validation_accuracy": 0.538,
+      "learning_rate": 0.0001,
+      "epochs": 3,
+      "update_steps": 375,
+      "trainable_parameter_count": 258,
+      "initial_lora_norms": {},
+      "final_lora_norms": {},
+      "max_gradient_norm": 4.3412322998046875,
+      "gradient_observations": 750,
+      "lora_parameters_changed": false,
+      "initial_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "final_parameter_checksum": "30a8e8f0be745029d9ef1dcfc190365448dcd853c65c42e99c686a39264cf882",
+      "repeat": 1
+    },
+    {
+      "condition": "lora",
+      "validation_loss": 0.671512770652771,
+      "validation_accuracy": 0.556,
+      "learning_rate": 0.0001,
+      "epochs": 3,
+      "update_steps": 375,
+      "trainable_parameter_count": 8450,
+      "initial_lora_norms": {
+        "bert.encoder.layer.0.attention.self.query.A": 0.3232332766056061,
+        "bert.encoder.layer.0.attention.self.query.B": 0.0,
+        "bert.encoder.layer.0.attention.self.value.A": 0.3079947233200073,
+        "bert.encoder.layer.0.attention.self.value.B": 0.0,
+        "bert.encoder.layer.1.attention.self.query.A": 0.32320529222488403,
+        "bert.encoder.layer.1.attention.self.query.B": 0.0,
+        "bert.encoder.layer.1.attention.self.value.A": 0.32501882314682007,
+        "bert.encoder.layer.1.attention.self.value.B": 0.0
+      },
+      "final_lora_norms": {
+        "bert.encoder.layer.0.attention.self.query.A": 0.517236053943634,
+        "bert.encoder.layer.0.attention.self.query.B": 0.1922694891691208,
+        "bert.encoder.layer.0.attention.self.value.A": 0.5260772109031677,
+        "bert.encoder.layer.0.attention.self.value.B": 0.28446048498153687,
+        "bert.encoder.layer.1.attention.self.query.A": 0.4233766496181488,
+        "bert.encoder.layer.1.attention.self.query.B": 0.17843633890151978,
+        "bert.encoder.layer.1.attention.self.value.A": 0.6072377562522888,
+        "bert.encoder.layer.1.attention.self.value.B": 0.29165735840797424
+      },
+      "max_gradient_norm": 4.293731212615967,
+      "gradient_observations": 3750,
+      "lora_parameters_changed": true,
+      "initial_parameter_checksum": "ef777eee197cf165b17d77181bffbcc908f2d8e47200a056bf88555c36d6d89f",
+      "final_parameter_checksum": "0d55e8cac1fb099f360af409b1b264e13826ad06727f841d73950399d7950607",
+      "repeat": 1
+    },
+    {
+      "condition": "untrained",
+      "validation_loss": 0.6882250328063965,
+      "validation_accuracy": 0.548,
+      "learning_rate": 0.0001,
+      "epochs": 0,
+      "update_steps": 0,
+      "trainable_parameter_count": 4386178,
+      "initial_lora_norms": {},
+      "final_lora_norms": {},
+      "max_gradient_norm": 0.0,
+      "gradient_observations": 0,
+      "lora_parameters_changed": false,
+      "initial_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "final_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "repeat": 2
+    },
+    {
+      "condition": "head_only",
+      "validation_loss": 0.6817072734832764,
+      "validation_accuracy": 0.538,
+      "learning_rate": 0.0001,
+      "epochs": 3,
+      "update_steps": 375,
+      "trainable_parameter_count": 258,
+      "initial_lora_norms": {},
+      "final_lora_norms": {},
+      "max_gradient_norm": 4.3412322998046875,
+      "gradient_observations": 750,
+      "lora_parameters_changed": false,
+      "initial_parameter_checksum": "faea2f8ccf98b3935fc7d07ecc67badc988a0422c7e8d45afcf02de645078693",
+      "final_parameter_checksum": "30a8e8f0be745029d9ef1dcfc190365448dcd853c65c42e99c686a39264cf882",
+      "repeat": 2
+    },
+    {
+      "condition": "lora",
+      "validation_loss": 0.671512770652771,
+      "validation_accuracy": 0.556,
+      "learning_rate": 0.0001,
+      "epochs": 3,
+      "update_steps": 375,
+      "trainable_parameter_count": 8450,
+      "initial_lora_norms": {
+        "bert.encoder.layer.0.attention.self.query.A": 0.3232332766056061,
+        "bert.encoder.layer.0.attention.self.query.B": 0.0,
+        "bert.encoder.layer.0.attention.self.value.A": 0.3079947233200073,
+        "bert.encoder.layer.0.attention.self.value.B": 0.0,
+        "bert.encoder.layer.1.attention.self.query.A": 0.32320529222488403,
+        "bert.encoder.layer.1.attention.self.query.B": 0.0,
+        "bert.encoder.layer.1.attention.self.value.A": 0.32501882314682007,
+        "bert.encoder.layer.1.attention.self.value.B": 0.0
+      },
+      "final_lora_norms": {
+        "bert.encoder.layer.0.attention.self.query.A": 0.517236053943634,
+        "bert.encoder.layer.0.attention.self.query.B": 0.1922694891691208,
+        "bert.encoder.layer.0.attention.self.value.A": 0.5260772109031677,
+        "bert.encoder.layer.0.attention.self.value.B": 0.28446048498153687,
+        "bert.encoder.layer.1.attention.self.query.A": 0.4233766496181488,
+        "bert.encoder.layer.1.attention.self.query.B": 0.17843633890151978,
+        "bert.encoder.layer.1.attention.self.value.A": 0.6072377562522888,
+        "bert.encoder.layer.1.attention.self.value.B": 0.29165735840797424
+      },
+      "max_gradient_norm": 4.293731212615967,
+      "gradient_observations": 3750,
+      "lora_parameters_changed": true,
+      "initial_parameter_checksum": "ef777eee197cf165b17d77181bffbcc908f2d8e47200a056bf88555c36d6d89f",
+      "final_parameter_checksum": "0d55e8cac1fb099f360af409b1b264e13826ad06727f841d73950399d7950607",
+      "repeat": 2
+    }
+  ],
+  "deterministic_repeats_match": true
+}

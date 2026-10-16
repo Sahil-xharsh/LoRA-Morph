@@ -14,7 +14,8 @@ examples, three epochs, batch size 16, learning rate `2e-5`.
 ## Custom transformer LoRA
 
 The custom implementation targets `query` and `value`, using rank 8 and alpha
-16. The classifier head remains trainable.
+16. The classifier head remains trainable. The corrected deterministic release
+run uses learning rate `1e-4`.
 
 - Trainable parameters: `8,450 / 4,394,370`
 - Trainable fraction: `0.192%`
@@ -32,16 +33,28 @@ convolutional layers remain unchanged.
 - Final test loss: `1.2345`
 - Final test accuracy: `53.1%`
 
+## Step 0 accuracy diagnosis
+
+The original `2e-5` schedule produced `54.8%` for the untrained model,
+`53.4%` for frozen-backbone head-only training, and `53.6%` for LoRA rank 8.
+LoRA parameters received gradients and changed, but did not beat the
+validation majority baseline.
+
+The corrected `1e-4` schedule produced `54.8%` untrained, `53.8%` head-only,
+and `55.6%` for LoRA rank 8. Labels remained `0 = negative` and `1 = positive`;
+the maximum token length was 54, so no examples were truncated at max length
+128. Two consecutive deterministic runs matched by parameter checksum.
+
 ## Rank sweep
 
 The fixed SST-2 setup was run with alpha 16 for each rank:
 
 | Rank | Trainable parameters | Final validation accuracy |
 | ---: | ---: | ---: |
-| 2 | 2,306 | 53.8% |
-| 4 | 4,354 | 50.8% |
-| 8 | 8,450 | 52.2% |
-| 16 | 16,642 | 52.6% |
+| 2 | 2,306 | 60.8% |
+| 4 | 4,354 | 60.4% |
+| 8 | 8,450 | 56.0% |
+| 16 | 16,642 | 60.2% |
 
 ## PEFT comparison verdicts
 
@@ -66,8 +79,8 @@ both implementations.
 ## Release checks
 
 - Unit and integration tests: `18 passed`.
-- Adapter export: generated `hf_release/adapter.pt`, `config.json`, and
-  `metrics.json`.
+- Adapter export: generated `hf_release/adapter.safetensors`, `config.json`,
+  model card, and rank-sweep plot; roundtrip maximum logit error was `0`.
 - Package metadata: version `0.1.0`, Python `>=3.11`.
 - Remaining owner decision: choose and add a project license and contribution
   policy before publishing the repository.

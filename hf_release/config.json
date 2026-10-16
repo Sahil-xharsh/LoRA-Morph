@@ -1,16 +1,15 @@
 {
   "base_model": "prajjwal1/bert-tiny",
-  "task": "sst2-sentiment",
-  "num_labels": 2,
-  "rank": 8,
-  "alpha": 16,
+  "r": 2,
+  "alpha": 16.0,
   "target_modules": [
     "query",
     "value"
   ],
-  "max_length": 128,
+  "task": "sst2-sentiment",
   "seed": 42,
-  "epochs": 3,
-  "learning_rate": 2e-05,
-  "batch_size": 16
+  "train_examples": 2000,
+  "val_examples": 500,
+  "lora_morph_version": "0.1.0",
+  "final_val_accuracy": 0.608
 }

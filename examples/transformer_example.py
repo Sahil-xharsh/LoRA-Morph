@@ -16,19 +16,45 @@ SEED = 42
 
 BATCH_SIZE = 16
 EPOCHS = 3
-LEARNING_RATE = 2e-5
+# The original 2e-5 schedule did not beat the validation majority baseline.
+# The deterministic Step 0 diagnosis showed 1e-4 improves LoRA to 55.6%.
+LEARNING_RATE = 1e-4
 MAX_LENGTH = 128
 
 OUTPUT_PATH = Path("results/assets/metrics/transformer_baseline.json")
 
 
-def set_seed(seed):
+def set_seed(seed, deterministic=True):
+    """Seed all supported random number generators for repeatable runs."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
+
+    if deterministic:
+        torch.use_deterministic_algorithms(True, warn_only=True)
+        if torch.backends.cudnn.is_available():
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+
+
+def make_loader(dataset, batch_size, tokenizer, shuffle, seed):
+    """Build a data loader with an explicitly seeded shuffle generator."""
+    generator = torch.Generator()
+    generator.manual_seed(seed)
+
+    def collate(rows):
+        return tokenizer.pad(rows, return_tensors="pt")
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        generator=generator,
+        collate_fn=collate,
+    )
 
 
 def select_fixed_subset(dataset: Dataset, size: int, seed: int):
