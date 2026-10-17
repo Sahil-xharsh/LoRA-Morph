@@ -23,7 +23,6 @@ PLOT_DIR = Path("results/assets/plots")
 
 
 def adapter_state_from_checkpoint(checkpoint_path: Path) -> dict[str, torch.Tensor]:
-    """Load and normalize trainable adapter tensors from a training checkpoint."""
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     state = checkpoint.get("state_dict", checkpoint)
     return {

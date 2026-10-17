@@ -72,9 +72,8 @@ def parameter_norms(model, predicate):
         if predicate(name, parameter)
     }
 
-# MetaData
+# runs diagnostic condition and returns MetaData
 def train_or_evaluate(kind, datasets, tokenizer, learning_rate):
-    """Run one diagnostic condition and return reproducibility metadata."""
     set_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
